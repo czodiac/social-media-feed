@@ -14,23 +14,21 @@ function App() {
   return (
     <Router>
       <Navbar />
-      <svg> {/* <svg> tag is to supress "This tab <> is unrecognized in this browser" warning in console. */}
-        <div className="App">
-          <Switch>
-            <Route
-              exact
-              path="/"
-              render={() => (
-                <React.Fragment> {/* Fragment lets us grop a list of children without adding extra nodes to the DOM. Instead of React.Fragment, we can use <></> */}
-                  <AddPostForm />
-                  <PostsList />
-                </React.Fragment>
-              )}
-            />
-            <Redirect to="/" />
-          </Switch>
-        </div>
-      </svg>
+      <div className="App">
+        <Switch>
+          <Route
+            exact
+            path="/"
+            render={() => (
+              <React.Fragment> {/* Fragment lets us grop a list of children without adding extra nodes to the DOM. Instead of React.Fragment, we can use <></> */}
+                <AddPostForm />
+                <PostsList />
+              </React.Fragment>
+            )}
+          />
+          <Redirect to="/" />
+        </Switch>
+      </div>
     </Router>
   )
 }
