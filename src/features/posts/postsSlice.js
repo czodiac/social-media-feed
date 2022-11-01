@@ -19,5 +19,5 @@ const postsSlice = createSlice({
     }
 })
 
-export const { postAdded } = postsSlice.actions // If there's more than 1 recuder functions -> export const { postAdded, postDeleted, postEdited } = postsSlice.actions
+export const { postAdded } = postsSlice.actions // If there's more than 1 reducer functions -> export const { postAdded, postDeleted, postEdited } = postsSlice.actions
 export default postsSlice.reducer
