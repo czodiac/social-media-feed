@@ -7,7 +7,7 @@ const initialState = [
         id: '1',
         title: 'First post',
         content: 'Hi',
-        date: sub(new Date(), { minutes: 10 }).toISOString(),
+        date: sub(new Date(), { minutes: 5 }).toISOString(),
         reactions: { thumbsUp: 0, hooray: 0, heart: 0, rocket: 0, eyes: 0 }
     },
     {

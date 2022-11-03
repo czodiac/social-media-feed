@@ -53,6 +53,7 @@ export const AddPostForm = () => {
                     type="text"
                     id="postTitle"
                     name="postTitle"
+                    placeholder="What's on your mind?"
                     value={title}
                     onChange={onTitleChanged}
                 />
