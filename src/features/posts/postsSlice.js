@@ -1,5 +1,5 @@
 //use the Redux Toolkit createSlice function to make a reducer function that knows how to handle our posts data
-import { createSlice, nanoid } from '@reduxjs/toolkit'
+import { createSlice, nanoid } from '@reduxjs/toolkit' // nanoid: // To generated a random unique ID
 import { sub } from 'date-fns';
 
 const initialState = [
@@ -32,6 +32,7 @@ const postsSlice = createSlice({
                 state.push(action.payload);
             },
             prepare(title, content, userId) {
+                // Unique IDs and other random values(id, date) should be put in the action, not calculated in the reducer
                 return {
                     payload: {
                         id: nanoid(),

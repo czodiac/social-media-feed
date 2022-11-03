@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { nanoid } from '@reduxjs/toolkit' // To generated a random unique ID
 import { postAdded } from './postsSlice'
 
 export const AddPostForm = () => {
