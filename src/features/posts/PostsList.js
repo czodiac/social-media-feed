@@ -5,10 +5,11 @@ import { PostAuthor } from './PostAuthor'
 
 export const PostsList = () => {
     const posts = useSelector(state => state.posts)
-
-    const renderedPosts = posts.map(post => (
+    const orderedPosts = posts.slice().sort((a, b) => b.date.localeCompare(a.date))
+    const renderedPosts = orderedPosts.map(post => (
         <article className="post-excerpt" key={post.id}>
             <h3>{post.title} - <PostAuthor userId={post.user} /></h3>
+            <div>{post.date}</div>
             <p className="post-content">{post.content.substring(0, 100)}</p>
             <Link to={`/posts/${post.id}`} className="button">View</Link>
         </article>

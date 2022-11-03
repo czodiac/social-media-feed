@@ -1,9 +1,10 @@
 //use the Redux Toolkit createSlice function to make a reducer function that knows how to handle our posts data
 import { createSlice, nanoid } from '@reduxjs/toolkit'
+import { sub } from 'date-fns';
 
 const initialState = [
-    { id: '1', title: 'First post', content: 'Hi' },
-    { id: '2', title: 'Second', content: 'Text' }
+    { id: '1', title: 'First post', content: 'Hi', date: sub(new Date(), { minutes: 10 }).toISOString() },
+    { id: '2', title: 'Second', content: 'Text', date: sub(new Date(), { minutes: 10 }).toISOString() }
 ]
 
 // Our posts slice is responsible for handling all updates to the posts data
@@ -23,7 +24,8 @@ const postsSlice = createSlice({
                         id: nanoid(),
                         title,
                         content,
-                        user: userId
+                        user: userId,
+                        date: new Date().toISOString()
                     }
                 }
             }
