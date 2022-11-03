@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { nanoid } from '@reduxjs/toolkit' // To generated a random unique ID
 import { postAdded } from './postsSlice'
 
@@ -14,21 +14,34 @@ export const AddPostForm = () => {
     //  var setFruit = fruitStateVariable[1]; // Second item in a pair
     const [title, setTitle] = useState('') // Declare a new state variable, which we'll call "title". The only argument to the useState() Hook is the initial state.
     const [content, setContent] = useState('')
+    const [userId, setUserId] = useState('')
 
     const dispatch = useDispatch()
+    const users = useSelector(state => state.users) // useSelector: Gets a specific value from state
 
     const onTitleChanged = e => setTitle(e.target.value)
     const onContentChanged = e => setContent(e.target.value)
+    const onAuthorChanged = e => setUserId(e.target.value)
 
     const onSavePostClicked = () => {
         if (title && content) {
             dispatch(
-                postAdded(title, content)
+                postAdded(title, content, userId)
             )
         }
         setTitle('')
         setContent('')
     }
+
+    const canSave = Boolean(title) && Boolean(content) && Boolean(userId)
+
+    /* Map: The map() function is used to iterate over an array and manipulate or change data items.
+    const num2x = [3, 8, 11, 7, 5].map((n) => n * 2);
+    console.log(num2x); // [6, 16, 22, 14, 10] 
+    */
+    const usersOptions = users.map(user => (
+        <option key={user.id} value={user.id}>{user.name}</option>
+    ))
 
     return (
         <section>
@@ -43,6 +56,11 @@ export const AddPostForm = () => {
                     value={title}
                     onChange={onTitleChanged}
                 />
+                Authors:
+                <select id="postAuthor" value={userId} onChange={onAuthorChanged}>
+                    <option value=""></option>
+                    {usersOptions}
+                </select>
                 Content:
                 <textarea
                     id="postContent"
@@ -50,7 +68,7 @@ export const AddPostForm = () => {
                     value={content}
                     onChange={onContentChanged}
                 />
-                <button type="button" onClick={(onSavePostClicked)}>Save</button> {/* onClick={() => setTitle('New title') */}
+                <button type="button" onClick={(onSavePostClicked)} disabled={!canSave}>Save</button> {/* onClick={() => setTitle('New title') */}
             </form>
         </section>
     )
