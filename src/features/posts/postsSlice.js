@@ -1,12 +1,19 @@
 //use the Redux Toolkit createSlice function to make a reducer function that knows how to handle our posts data
-import { createSlice, nanoid } from '@reduxjs/toolkit' // nanoid: // To generated a random unique ID
+import { createSlice, nanoid, createAsyncThunk } from '@reduxjs/toolkit' // nanoid: // To generated a random unique ID
 import { sub } from 'date-fns';
+import { client } from '../../api/client'
 
 const initialState = {
     posts: [],
     status: 'idle',
     error: null
 }
+
+// Arguments : prefix for the generated action, a "payload creator" callback function that should return a Promise containing some data, or a rejected Promise with an error
+export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
+    const response = await client.get('fakeApi/posts')
+    return response.data
+})
 
 // Our posts slice is responsible for handling all updates to the posts data
 const postsSlice = createSlice({
@@ -50,6 +57,19 @@ const postsSlice = createSlice({
                 existingPost.reactions[reaction]++
             }
         }
+    },
+    extraReducers(builder) {
+        builder
+            .addCase(fetchPosts.pending, (state, action) => {
+                state.status = 'loading'
+            })
+            .addCase(fetchPosts.fulfilled, (state, action) => {
+                state.posts = state.posts.concat(action.payload)
+            })
+            .addCase(fetchPosts.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
     }
 })
 
