@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { postAdded } from './postsSlice'
+import { addNewPost } from './postsSlice'
 
 export const AddPostForm = () => {
     // Hook
@@ -14,6 +15,7 @@ export const AddPostForm = () => {
     const [title, setTitle] = useState('') // Declare a new state variable, which we'll call "title". The only argument to the useState() Hook is the initial state.
     const [content, setContent] = useState('')
     const [userId, setUserId] = useState('')
+    const [addRequestStatus, setAddRequestStatus] = useState('idle')
 
     const dispatch = useDispatch()
     const users = useSelector(state => state.users) // useSelector: Gets a specific value from state
@@ -22,17 +24,24 @@ export const AddPostForm = () => {
     const onContentChanged = e => setContent(e.target.value)
     const onAuthorChanged = e => setUserId(e.target.value)
 
-    const onSavePostClicked = () => {
-        if (title && content) {
-            dispatch(
-                postAdded(title, content, userId)
-            )
+    const canSave = [title, content, userId].every(Boolean) && addRequestStatus === 'idle'
+    const onSavePostClicked = async () => {
+        if (canSave) {
+            try {
+                setAddRequestStatus('pending')
+                // Without .unwrap(), catch(err) won't be executed and it won't log 'Failed to save post: ' to the console when there's error.
+                // Redux Toolkit adds .unwrap() function to the returned Promise, which will return a new Promise that either has the actual action.payload value from a fulfilled action, or throws an error if it's the rejected action. This lets us handle success and failure in the component using normal try/catch logic.
+                await dispatch(addNewPost({ title, content, user: userId })).unwrap()
+                setTitle('')
+                setContent('')
+                setUserId('')
+            } catch (err) {
+                console.error('Failed to save post: ', err)
+            } finally {
+                setAddRequestStatus('idle')
+            }
         }
-        setTitle('')
-        setContent('')
     }
-
-    const canSave = Boolean(title) && Boolean(content) && Boolean(userId)
 
     /* Map: The map() function is used to iterate over an array and manipulate or change data items.
     const num2x = [3, 8, 11, 7, 5].map((n) => n * 2);
