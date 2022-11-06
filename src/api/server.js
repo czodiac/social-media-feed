@@ -1,4 +1,4 @@
-import { rest, setupWorker } from 'msw'
+import { rest, setupWorker } from 'msw' // msw: Mock Service Worker
 import { factory, oneOf, manyOf, primaryKey } from '@mswjs/data'
 import { nanoid } from '@reduxjs/toolkit'
 import faker from 'faker'
